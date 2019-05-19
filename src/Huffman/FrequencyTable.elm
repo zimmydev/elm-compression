@@ -1,8 +1,8 @@
-module Huffman.FrequencyTable exposing (FrequencyTable, bytesFromString, countTable)
+module Huffman.FrequencyTable exposing (FrequencyTable, generate, generateFromString, sampleSize, toCharList, toList)
 
 import Bytes exposing (Bytes, Endianness(..))
 import Bytes.Decode as BDecode exposing (Decoder, Step(..))
-import Bytes.Encode as BEncode exposing (Encoder)
+import Bytes.Encode as BEncode
 import Dict exposing (Dict)
 
 
@@ -10,38 +10,20 @@ import Dict exposing (Dict)
 --- TYPES ---
 
 
+type alias Symbol =
+    Int
+
+
 type FrequencyTable
-    = FrequencyTable (Dict Int Float)
-
-
-
---- TYPES FOR INTERNAL USE ---
-
-
-type alias CountTable =
-    Dict Int Int
+    = FrequencyTable Int (Dict Symbol Int)
 
 
 
 --- OBTAINING A FREQUENCY-TABLE ---
 
 
-load : Bytes -> FrequencyTable
-load bytes =
-    Debug.todo "load bytes"
-
-
-loadString : String -> FrequencyTable
-loadString string =
-    Debug.todo "load a string"
-
-
-
---- GENERATING A SYMBOL COUNT-TABLE ---
-
-
-countTable : Bytes -> CountTable
-countTable bytes =
+generate : Bytes -> FrequencyTable
+generate bytes =
     let
         size =
             Bytes.width bytes
@@ -56,13 +38,47 @@ countTable bytes =
     in
     case BDecode.decode (unsignedInt8List size) bytes of
         Nothing ->
-            Dict.empty
+            FrequencyTable 0 Dict.empty
 
         Just symbols ->
             symbols
                 |> List.foldl
-                    (\symbol acc -> acc |> Dict.update symbol startOrIncrement)
+                    (\sym acc -> acc |> Dict.update sym startOrIncrement)
                     Dict.empty
+                |> FrequencyTable size
+
+
+generateFromString : String -> FrequencyTable
+generateFromString string =
+    generate (bytesFromString string)
+
+
+
+--- TRANSFORMING A FREQUENCY-TABLE ---
+
+
+toList : FrequencyTable -> List ( Symbol, Int )
+toList (FrequencyTable _ dict) =
+    dict
+        |> Dict.toList
+        |> List.sortBy Tuple.second
+        |> List.reverse
+
+
+toCharList : FrequencyTable -> List ( Char, Int )
+toCharList frequencyTable =
+    frequencyTable
+        |> toList
+        |> List.map (Tuple.mapFirst Char.fromCode)
+
+
+sampleSize : FrequencyTable -> Int
+sampleSize (FrequencyTable size _) =
+    size
+
+
+
+--- HELPER FUNCTIONS ---
 
 
 unsignedInt8List : Int -> Decoder (List Int)
