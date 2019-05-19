@@ -1,9 +1,9 @@
-module Huffman.Types exposing (Count, Symbol)
+module Huffman.Types exposing (Symbol, Weight)
 
 
 type alias Symbol =
     Int
 
 
-type alias Count =
+type alias Weight =
     Int
