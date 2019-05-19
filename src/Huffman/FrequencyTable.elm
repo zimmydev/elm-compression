@@ -1,4 +1,4 @@
-module Huffman.FrequencyTable exposing (FrequencyTable)
+module Huffman.FrequencyTable exposing (FrequencyTable, bytesFromString, countTable)
 
 import Bytes exposing (Bytes, Endianness(..))
 import Bytes.Decode as BDecode exposing (Decoder, Step(..))
@@ -37,44 +37,32 @@ loadString string =
 
 
 
---- HELPER FUNCTIONS ---
+--- GENERATING A SYMBOL COUNT-TABLE ---
 
 
-count : Bytes -> CountTable
-count bytes =
+countTable : Bytes -> CountTable
+countTable bytes =
     let
-        maybeInts =
-            BDecode.decode (unsignedInt8List (Bytes.width bytes)) bytes
+        size =
+            Bytes.width bytes
+
+        startOrIncrement maybeCount =
+            case maybeCount of
+                Nothing ->
+                    Just 1
+
+                Just count ->
+                    Just (count + 1)
     in
-    case maybeInts of
+    case BDecode.decode (unsignedInt8List size) bytes of
         Nothing ->
             Dict.empty
 
-        Just ints ->
-            countHelper Dict.empty ints
-
-
-countHelper : Dict Int Int -> List Int -> CountTable
-countHelper acc ints =
-    case ints of
-        [] ->
-            acc
-
-        x :: xs ->
-            let
-                updateTable maybeV =
-                    case maybeV of
-                        Nothing ->
-                            Just 1
-
-                        Just v ->
-                            Just (v + 1)
-
-                newTable =
-                    acc
-                        |> Dict.update x updateTable
-            in
-            countHelper newTable xs
+        Just symbols ->
+            symbols
+                |> List.foldl
+                    (\symbol acc -> acc |> Dict.update symbol startOrIncrement)
+                    Dict.empty
 
 
 unsignedInt8List : Int -> Decoder (List Int)
