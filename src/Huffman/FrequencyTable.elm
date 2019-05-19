@@ -4,18 +4,15 @@ import Bytes exposing (Bytes, Endianness(..))
 import Bytes.Decode as BDecode exposing (Decoder, Step(..))
 import Bytes.Encode as BEncode
 import Dict exposing (Dict)
+import Huffman.Types exposing (..)
 
 
 
 --- TYPES ---
 
 
-type alias Symbol =
-    Int
-
-
 type FrequencyTable
-    = FrequencyTable Int (Dict Symbol Int)
+    = FrequencyTable Int (Dict Symbol Count)
 
 
 
@@ -57,7 +54,7 @@ generateFromString string =
 --- TRANSFORMING A FREQUENCY-TABLE ---
 
 
-toList : FrequencyTable -> List ( Symbol, Int )
+toList : FrequencyTable -> List ( Symbol, Count )
 toList (FrequencyTable _ dict) =
     dict
         |> Dict.toList
@@ -65,14 +62,14 @@ toList (FrequencyTable _ dict) =
         |> List.reverse
 
 
-toCharList : FrequencyTable -> List ( Char, Int )
+toCharList : FrequencyTable -> List ( Char, Count )
 toCharList frequencyTable =
     frequencyTable
         |> toList
         |> List.map (Tuple.mapFirst Char.fromCode)
 
 
-sampleSize : FrequencyTable -> Int
+sampleSize : FrequencyTable -> Count
 sampleSize (FrequencyTable size _) =
     size
 
