@@ -47,12 +47,12 @@ buildCodes lastCode acc tree =
 
         Branch _ tree1 tree2 ->
             let
-                codeTable1 =
+                codes1 =
                     tree1
                         |> buildCodes (lastCode |> Bits.append Zero) acc
 
-                codeTable2 =
+                codes2 =
                     tree2
                         |> buildCodes (lastCode |> Bits.append One) acc
             in
-            codeTable1 ++ codeTable2
+            codes1 ++ codes2

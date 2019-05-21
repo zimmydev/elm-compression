@@ -1,4 +1,4 @@
-module Compression.Bits exposing (Bit(..), Bits, append, empty, fromBytes, toBytes, toInts)
+module Compression.Bits exposing (Bit(..), Bits, append, empty, fromBytes, size, toBytes, toInts)
 
 import Bytes exposing (Bytes)
 
@@ -28,6 +28,15 @@ empty =
 append : Bit -> Bits -> Bits
 append bit (Bits bits) =
     Bits (toInt bit :: bits)
+
+
+
+--- ACCESSING PROPERTIES OF BITS ---
+
+
+size : Bits -> Int
+size (Bits bits) =
+    List.length bits
 
 
 
