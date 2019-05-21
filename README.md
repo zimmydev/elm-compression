@@ -3,20 +3,20 @@ A general-purpose compression library written in (and written for) Elm. This pac
 
 ## Roadmap for this library
 
-* ☐ Elaborate this README
-* ☐ Huffman coding
-  * ☑ Infrastructure
-  * ☐ Encoding
-  * ☐ Decoding
-* ☐ Arithmetic coding
-  * ☐ Infrastructure
-  * ☐ Encoding
-  * ☐ Decoding
-* ☐ LZ77 compression
-  * ☐ Infrastructure
-  * ☐ Compressing
-  * ☐ Decompressing
-* ☐ gzip compression
-  * ☐ Infrastructure
-  * ☐ Compressing
-  * ☐ Decompressing
+* Elaborate this README
+* Huffman coding
+  * ~~Infrastructure~~
+  * Encoding
+  * Decoding
+* Arithmetic coding
+  * Infrastructure
+  * Encoding
+  * Decoding
+* LZ77 compression
+  * Infrastructure
+  * Compressing
+  * Decompressing
+* gzip compression
+  * Infrastructure
+  * Compressing
+  * Decompressing
