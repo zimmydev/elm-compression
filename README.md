@@ -6,7 +6,7 @@ A general-purpose compression library written in (and written for) Elm. This pac
 
 * [✘] Elaborate this README
 * […] Huffman coding
-  * [✓] Infrastructure
+  * [✔] Infrastructure
   * [✘] Encoding
   * [✘] Decoding
 * [✘] Arithmetic coding
