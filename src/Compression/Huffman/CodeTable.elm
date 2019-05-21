@@ -1,8 +1,8 @@
 module Compression.Huffman.CodeTable exposing (CodeTable, codeOf, generate)
 
 import Compression.Bits as Bits exposing (Bit(..), Bits)
-import Compression.FrequencyTable as FrequencyTable exposing (Symbol)
-import Compression.Huffman.Tree as Tree exposing (Tree(..))
+import Compression.FrequencyTable exposing (Symbol)
+import Compression.Huffman.Tree exposing (Tree(..))
 import Dict exposing (Dict)
 
 

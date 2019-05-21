@@ -1,6 +1,6 @@
 module Compression.Huffman.Tree exposing (Tree(..), generate, weightOf)
 
-import Compression.Bits as Bits exposing (Bit(..), Bits)
+import Compression.Bits exposing (Bit(..), Bits)
 import Compression.FrequencyTable as FrequencyTable exposing (FrequencyTable, Symbol, Weight)
 
 
