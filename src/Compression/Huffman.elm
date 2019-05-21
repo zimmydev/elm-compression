@@ -1,7 +1,7 @@
-module Huffman exposing (encode)
+module Compression.Huffman exposing (encode)
 
 import Bytes exposing (Bytes)
-import Huffman.CodeTable exposing (CodeTable)
+import Compression.Huffman.Tree exposing (CodeTable)
 
 
 encode : Bytes -> CodeTable -> Bytes

@@ -1,14 +1,21 @@
-module Huffman.FrequencyTable exposing (FrequencyTable, generate, generateFromString, sizeOf, toList)
+module Compression.FrequencyTable exposing (FrequencyTable, Symbol, Weight, frequencyOf, generate, generateFromString, numberOfSymbolsIn, toList)
 
 import Bytes exposing (Bytes)
 import Bytes.Decode as BDecode exposing (Decoder, Step(..))
 import Bytes.Encode as BEncode
 import Dict exposing (Dict)
-import Huffman.Types exposing (..)
 
 
 
 --- TYPES ---
+
+
+type alias Symbol =
+    Int
+
+
+type alias Weight =
+    Int
 
 
 type FrequencyTable
@@ -19,18 +26,17 @@ type FrequencyTable
 --- OBTAINING A FREQUENCY-TABLE ---
 
 
-generate : Bytes -> FrequencyTable
+generate : Bytes -> Maybe FrequencyTable
 generate bytes =
     let
         size =
             Bytes.width bytes
     in
     BDecode.decode (unsignedInt8List size) bytes
-        |> Maybe.withDefault []
-        |> frequencyTable
+        |> Maybe.andThen buildFrequencyTable
 
 
-generateFromString : String -> FrequencyTable
+generateFromString : String -> Maybe FrequencyTable
 generateFromString string =
     let
         bytes =
@@ -40,18 +46,28 @@ generateFromString string =
 
 
 
---- TRANSFORMING A FREQUENCY-TABLE ---
+--- CONVERTING A FREQUENCY-TABLE ---
 
 
 toList : FrequencyTable -> List ( Symbol, Weight )
 toList (FrequencyTable dict) =
+    -- Converts the buildFrequencyTable to a list sorted-ascending by weight
     dict
         |> Dict.toList
         |> List.sortBy Tuple.second
 
 
-sizeOf : FrequencyTable -> Int
-sizeOf (FrequencyTable dict) =
+
+--- ACCESSING PROPERTIES OF A FREQUENCY-TABLE ---
+
+
+frequencyOf : Symbol -> FrequencyTable -> Maybe Weight
+frequencyOf symbol (FrequencyTable dict) =
+    Dict.get symbol dict
+
+
+numberOfSymbolsIn : FrequencyTable -> Int
+numberOfSymbolsIn (FrequencyTable dict) =
     Dict.size dict
 
 
@@ -59,8 +75,8 @@ sizeOf (FrequencyTable dict) =
 --- HELPER FUNCTIONS ---
 
 
-frequencyTable : List Symbol -> FrequencyTable
-frequencyTable symbols =
+buildFrequencyTable : List Symbol -> Maybe FrequencyTable
+buildFrequencyTable symbols =
     let
         createOrIncrement maybeWeight =
             case maybeWeight of
@@ -69,12 +85,21 @@ frequencyTable symbols =
 
                 Just weight ->
                     Just (weight + 1)
+
+        frequencies =
+            symbols
+                |> List.foldl
+                    (\sym acc -> acc |> Dict.update sym createOrIncrement)
+                    Dict.empty
+                |> FrequencyTable
     in
-    symbols
-        |> List.foldl
-            (\sym acc -> acc |> Dict.update sym createOrIncrement)
-            Dict.empty
-        |> FrequencyTable
+    if numberOfSymbolsIn frequencies < 2 then
+        -- A frequency-table with less than 2 symbols is useless for any coding
+        -- algorithms; there is no entropy to encode!
+        Nothing
+
+    else
+        Just frequencies
 
 
 unsignedInt8List : Int -> Decoder (List Int)
