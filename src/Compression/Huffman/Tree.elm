@@ -1,7 +1,7 @@
 module Compression.Huffman.Tree exposing (Tree(..), generate, weightOf)
 
 import Compression.Bits as Bits exposing (Bit(..), Bits)
-import Compression.FrequencyTable as Freq exposing (FrequencyTable, Symbol, Weight)
+import Compression.FrequencyTable as FrequencyTable exposing (FrequencyTable, Symbol, Weight)
 
 
 
@@ -18,9 +18,9 @@ type Tree
 
 
 generate : FrequencyTable -> Tree
-generate freqTable =
-    freqTable
-        |> Freq.toList
+generate freqs =
+    freqs
+        |> FrequencyTable.toList
         -- Convert all the symbols and weights into leaves
         |> List.map (\( sym, weight ) -> Leaf weight sym)
         |> buildTree

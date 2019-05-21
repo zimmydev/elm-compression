@@ -1,7 +1,6 @@
 module Compression.Bits exposing (Bit(..), Bits, append, empty, fromBytes, toBytes, toInts)
 
 import Bytes exposing (Bytes)
-import Compression.FrequencyTable exposing (Symbol, Weight)
 
 
 type Bit
