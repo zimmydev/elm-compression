@@ -1,6 +1,6 @@
 # elm-compression [![Build Status](https://travis-ci.com/zimmydev/elm-compression.svg?branch=master)](https://travis-ci.com/zimmydev/elm-compression)
 
-NOTE: This library is under development. It is mostly unusable in its current form.
+*NOTE: This library is under development. It is mostly unusable in its current form.*
 
 An aspiring general-purpose compression library written for Elm.
 
@@ -10,7 +10,7 @@ Any gaps in the library be made as easy as possible to fill using the library it
 
 ## Roadmap for this library
 
-**NOTE: This is more a checklist for myself than anything else.**
+*NOTE: This is more a checklist for myself than anything else.*
 
 ### Planned
 
