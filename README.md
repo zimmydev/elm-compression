@@ -2,9 +2,11 @@
 
 NOTE: This library is under development. It is mostly unusable in its current form.
 
-A general-purpose compression library written in (and written for) Elm. This package does not include every compression method; rather, it includes implementations of common coding and compression schemes. These schemes are written modularly in a such a way that composing them into more complex schemes is easy and relatively straight-forward (that's the hope, at least).
+An aspiring general-purpose compression library written for Elm.
 
-Any gaps in the library have been made as easy as possible to fill using the library itself, in most cases. High-level functions that compress bytes to a `gzip` file are available, but so are low-level functions and data structures that work on the coding and transform layers. This allows you to create new or unincluded compression schemes in (usually) just a few lines of code.
+This package will not include every compression method; rather, it will includes implementations of common coding and compression schemes. These will be designed like building blocks, so that composing them into more complex schemes should be easy and relatively straight-forward (that's the hope, at least).
+
+Any gaps in the library be made as easy as possible to fill using the library itself, in most cases. A high-level API (e.g. compressing `Bytes` to a `gzip` file) should be available, but so should a low-level API and that allows access to the transform and coding layers. This should allow you to create new or unincluded compression schemes in (usually) just a few lines of code.
 
 ## Roadmap for this library
 
