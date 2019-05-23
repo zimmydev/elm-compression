@@ -38,7 +38,7 @@ decodeBytesAsArray bytes =
         size =
             Bytes.width bytes
     in
-    BDecode.decode (unsignedInt8ListDecoder size) bytes
+    BDecode.decode (unsignedInt8ArrayDecoder size) bytes
         -- Due to our particular decoder never failing, we can safely default.
         |> Maybe.withDefault Array.empty
 
@@ -47,8 +47,8 @@ decodeBytesAsArray bytes =
 --- HELPER FUNCTIONS ---
 
 
-unsignedInt8ListDecoder : Int -> Decoder (Array Symbol)
-unsignedInt8ListDecoder size =
+unsignedInt8ArrayDecoder : Int -> Decoder (Array Symbol)
+unsignedInt8ArrayDecoder size =
     BDecode.loop ( 0, Array.initialize size (always 0) )
         (\( n, acc ) ->
             if n >= size then
