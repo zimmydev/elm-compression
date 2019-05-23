@@ -14,10 +14,8 @@ encode bytes =
 
 
 decode : Bytes -> Maybe Bytes
-decode bytes =
-    -- TODO: We'll need to decode the prefixed table and use that to decode the
-    -- stream; then we'll return the decoded stream
-    Debug.todo "Huffman decoding"
+decode _ =
+    Debug.todo "We'll need to decode the prefixed table and use that to decode the stream; then we'll return the decoded stream"
 
 
 
@@ -25,10 +23,8 @@ decode bytes =
 
 
 encodeWithTable : Bytes -> CodeTable -> Bytes
-encodeWithTable bytes codes =
-    -- TODO: We'll need to generate a code-table from the bytes, then use that
-    -- to encode the bytes
-    Debug.todo "Huffman encoding"
+encodeWithTable _ _ =
+    Debug.todo "We'll need to generate a code-table from the bytes, then use that to encode the bytes"
 
 
 codeTable : Bytes -> Maybe CodeTable

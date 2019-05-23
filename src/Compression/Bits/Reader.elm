@@ -1,8 +1,5 @@
 module Compression.Bits.Reader exposing (Reader, init, read, readOne, step, stepBy)
 
-import Array exposing (Array)
-import Bitwise
-import Bytes exposing (Bytes)
 import Compression.Bits as Bits exposing (Bit, Bits)
 import Maybe.Extra exposing (combine)
 

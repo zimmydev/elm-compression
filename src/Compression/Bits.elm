@@ -65,7 +65,7 @@ append bit (Bits sz byteArray) =
 
 
 get : Int -> Bits -> Maybe Bit
-get index (Bits sz byteArray) =
+get index (Bits _ byteArray) =
     let
         ( byteIndex, localIndex ) =
             ( index // 8
@@ -102,12 +102,12 @@ sizeInBytes (Bits sz array) =
 
 
 fromBytes : Bytes -> Bits
-fromBytes bytes =
+fromBytes _ =
     Debug.todo "Convert bytes to bits"
 
 
 toBytes : Bits -> Bytes
-toBytes bits =
+toBytes _ =
     Debug.todo "Convert bits to bytes"
 
 

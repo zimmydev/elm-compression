@@ -2,9 +2,8 @@ module Compression.FrequencyTable exposing (FrequencyTable, frequencyOf, generat
 
 import Array exposing (Array)
 import Bytes exposing (Bytes)
-import Bytes.Decode as BDecode exposing (Decoder, Step(..))
 import Bytes.Encode as BEncode
-import Compression exposing (..)
+import Compression exposing (Symbol, Weight, decodeBytesAsArray)
 import Dict exposing (Dict)
 
 
