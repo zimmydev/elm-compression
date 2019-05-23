@@ -132,12 +132,11 @@ getBitInByte index byte =
         mask =
             bitPattern True |> Bitwise.shiftRightZfBy index
 
-        bit =
+        result =
             byte
                 |> Bitwise.and mask
-                |> Bitwise.shiftLeftBy index
     in
-    case bit of
+    case result of
         0x00 ->
             False
 
