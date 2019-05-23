@@ -1,4 +1,4 @@
-module Compression.Bits.Reader exposing (Reader, advance, init, read, readOne, step)
+module Compression.Bits.Reader exposing (Reader, init, read, readOne, step, stepBy)
 
 import Array exposing (Array)
 import Bitwise
@@ -46,11 +46,11 @@ read count reader =
 step : Reader -> Reader
 step reader =
     reader
-        |> advance 1
+        |> stepBy 1
 
 
-advance : Int -> Reader -> Reader
-advance delta (Reader pos bits) =
+stepBy : Int -> Reader -> Reader
+stepBy delta (Reader pos bits) =
     Reader (pos + delta) bits
 
 
