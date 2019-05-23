@@ -1,4 +1,4 @@
-module Compression exposing (Symbol, Weight, decodeBytesAsArray)
+module Compression exposing (Size, Symbol, Weight, decodeBytesAsArray)
 
 import Array exposing (Array)
 import Bytes exposing (Bytes)
@@ -17,6 +17,12 @@ type alias Symbol =
 {-| `Weight`, in the context of compression, is the number of times that some `Symbol` appears in a stream that you want to compress. It could have also been called `Count`.
 -}
 type alias Weight =
+    Int
+
+
+{-| `Size` is a generic type that represents some positive-integer measure of size (a.k.a. width). It is just an alias for `Int`. Depending on how it is used in the library, it could represent a size in bits or bytes.
+-}
+type alias Size =
     Int
 
 
