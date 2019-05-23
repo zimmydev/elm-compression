@@ -1,7 +1,7 @@
 module Compression.Huffman.CodeTable exposing (CodeTable, codeOf, generate)
 
 import Compression exposing (Symbol)
-import Compression.Bits as Bits exposing (Bit(..), Bits)
+import Compression.Bits as Bits exposing (Bits)
 import Compression.Huffman.Tree exposing (Tree(..))
 import Dict exposing (Dict)
 
@@ -49,10 +49,10 @@ buildCodes lastCode acc tree =
             let
                 codes1 =
                     tree1
-                        |> buildCodes (lastCode |> Bits.append Zero) acc
+                        |> buildCodes (lastCode |> Bits.append False) acc
 
                 codes2 =
                     tree2
-                        |> buildCodes (lastCode |> Bits.append One) acc
+                        |> buildCodes (lastCode |> Bits.append True) acc
             in
             codes1 ++ codes2
