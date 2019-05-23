@@ -1,14 +1,16 @@
-module Compression.Bits exposing (Bit(..), Bits, append, empty, fromBytes, size, toBytes, toInts)
+module Compression.Bits exposing (Bit, Bits, append, concat, empty, fromBytes, fromList, size, toBytes, toList)
 
 import Bytes exposing (Bytes)
 
 
-type Bit
-    = Zero
-    | One
+type alias Bit =
+    Int
 
 
-type Bits
+type
+    Bits
+    -- Bits are ordered with the LSB as the head of the list, which is just
+    -- an implementation detail to save CPU for `append` operations.
     = Bits (List Int)
 
 
@@ -27,7 +29,12 @@ empty =
 
 append : Bit -> Bits -> Bits
 append bit (Bits bits) =
-    Bits (toInt bit :: bits)
+    Bits (clamp 0 1 bit :: bits)
+
+
+concat : Bits -> Bits -> Bits
+concat (Bits bits2) (Bits bits1) =
+    Bits (bits2 ++ bits1)
 
 
 
@@ -53,20 +60,12 @@ toBytes bits =
     Debug.todo "Convert bits to bytes"
 
 
-toInts : Bits -> List Int
-toInts (Bits bits) =
+toList : Bits -> List Bit
+toList (Bits bits) =
     List.reverse bits
 
 
-
---- HELPER FUNCTIONS --
-
-
-toInt : Bit -> Int
-toInt bit =
-    case bit of
-        Zero ->
-            0
-
-        One ->
-            1
+fromList : List Bit -> Bits
+fromList list =
+    List.reverse list
+        |> Bits

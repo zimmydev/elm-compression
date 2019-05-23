@@ -1,21 +1,15 @@
-module Compression.FrequencyTable exposing (FrequencyTable, Symbol, Weight, frequencyOf, generate, generateFromString, numberOfSymbolsIn, toList)
+module Compression.FrequencyTable exposing (FrequencyTable, frequencyOf, generate, generateFromString, numberOfSymbolsIn, toList)
 
+import Array exposing (Array)
 import Bytes exposing (Bytes)
 import Bytes.Decode as BDecode exposing (Decoder, Step(..))
 import Bytes.Encode as BEncode
+import Compression exposing (..)
 import Dict exposing (Dict)
 
 
 
 --- TYPES ---
-
-
-type alias Symbol =
-    Int
-
-
-type alias Weight =
-    Int
 
 
 type FrequencyTable
@@ -28,12 +22,9 @@ type FrequencyTable
 
 generate : Bytes -> Maybe FrequencyTable
 generate bytes =
-    let
-        size =
-            Bytes.width bytes
-    in
-    BDecode.decode (unsignedInt8List size) bytes
-        |> Maybe.andThen buildFrequencyTable
+    bytes
+        |> decodeBytesAsArray
+        |> buildFrequencyTable
 
 
 generateFromString : String -> Maybe FrequencyTable
@@ -75,7 +66,7 @@ numberOfSymbolsIn (FrequencyTable dict) =
 --- HELPER FUNCTIONS ---
 
 
-buildFrequencyTable : List Symbol -> Maybe FrequencyTable
+buildFrequencyTable : Array Symbol -> Maybe FrequencyTable
 buildFrequencyTable symbols =
     let
         createOrIncrement maybeWeight =
@@ -88,7 +79,7 @@ buildFrequencyTable symbols =
 
         frequencies =
             symbols
-                |> List.foldl
+                |> Array.foldl
                     (\sym acc -> acc |> Dict.update sym createOrIncrement)
                     Dict.empty
                 |> FrequencyTable
@@ -100,15 +91,3 @@ buildFrequencyTable symbols =
 
     else
         Just frequencies
-
-
-unsignedInt8List : Int -> Decoder (List Int)
-unsignedInt8List size =
-    BDecode.loop ( size, [] )
-        (\( n, acc ) ->
-            if n <= 0 then
-                BDecode.succeed (Done (List.reverse acc))
-
-            else
-                BDecode.map (\x -> Loop ( n - 1, x :: acc )) BDecode.unsignedInt8
-        )
