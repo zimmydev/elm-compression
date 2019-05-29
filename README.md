@@ -49,3 +49,16 @@ Any gaps in the library should be made as easy as possible to fill using the lib
 
 * Adaptive versions of some coders
 * FSE Coding
+
+## Big ideas & notes
+
+* `Bits` should probably be broken off into its own library.
+  * A variable-bit datatype and bitwise parsing can be useful beyond the scope of data compression, such as base64, which is an encoding which does not aim to compress data.
+* `Bits.Reader` needs to be sacrificed to `/dev/null` and `Bits.Parser` should replace it. It should behave much like the `elm/parser` library, for each function that makes sense in the context of bitstreams.
+* Take advantage of the guaranteed 32-bit `Int` for storing in the array. (implementation detail)
+* Prefer naming explicitness with `type Bit = One | Zero` over an alias for `Bool`.
+* `Bits.append` should become `Bits.push` and `Bits.append` should become a new function which has the type signature `Bits -> Bits -> Bits`. (also an implementation detail)
+  * Use some shifting and masking wizardry to speed up writes to the array.
+  * Borrows naming conventions from the `Array` library, for consistence.
+* Accessing **n** sequential bits could be faster. Currently it is done one-at-a-time with `Array.get` for each bit. Maybe this is okay. With some tedious math I would be able to calculate a slice of the array (`Array.slice`) and do some masking and shifting on it to get another valid array that I can pass to the `Bits` constructor, which can just be passed back to the user of the library.
+  * Make an explicit top-level function that will convert any `Bits` to their `List Bit` for convenience. Otherwise, there should be no need to deal with `List` across the library.
